@@ -1,6 +1,6 @@
 import { getPool } from "@server/db";
 import { logger } from "@server/logging";
-import { hedgehogSchema } from "@shared/hedgehog";
+import { Hedgehog, hedgehogSchema } from "@shared/hedgehog";
 import { sql } from "slonik";
 
 export async function getAllHedgehogs() {
@@ -33,4 +33,23 @@ export async function getHedgehog(id: number) {
   }
 }
 
-// TODO: Yksittäisen siilin lisäämisen sovelluslogiikka
+
+/**
+ * Add new hedgehog to database
+ *
+ * @param Hedgehog Hedgehog coordinates
+ * @returns Json hedgehog
+ */
+export async function addHedgehog(hedgehogData: Hedgehog) {
+  try {
+    const hedgehog = await getPool().any(
+      sql.type(hedgehogSchema) `INSERT INTO hedgehog (name, age, gender)
+      VALUES (${hedgehogData.name}, ${hedgehogData.age}, ${hedgehogData.gender})`
+    );
+
+    return true;
+  } catch (error) {
+    logger.error(error);
+    return false;
+  }
+}

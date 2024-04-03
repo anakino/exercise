@@ -1,4 +1,4 @@
-import { getAllHedgehogs, getHedgehog } from "@server/application/hedgehog";
+import { getAllHedgehogs, getHedgehog, addHedgehog } from "@server/application/hedgehog";
 import { FastifyInstance, FastifyPluginOptions, FastifyRequest } from "fastify";
 
 interface GetHedgehogById { 
@@ -33,6 +33,15 @@ export function hedgehogRouter(
 
   // TODO: Yksittäisen siilin lisäämisen sovelluslogiikka
   // fastify.post(...)
+  fastify.post("/add", async function (request, reply) {
+    const requestBody = request.body;
+    // TODO parse request body and send to addHedgehog
+    // const response = await addHedgehog();
+
+    return reply.code(200).send({
+      response: true
+    })
+  })
 
   done();
 }
