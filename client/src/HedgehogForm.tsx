@@ -1,13 +1,51 @@
 import {
   Button, Box, FormControl, FormControlLabel, FormLabel, Paper, Radio, RadioGroup, TextField, Typography
 } from "@mui/material";
+import { useState } from "react";
 
 interface Props {
   coordinates: number[];
 }
 
+interface FormValues {
+  name?: string;
+  age?: number;
+  gender?: string;
+}
+
 export function HedgehogForm({ coordinates }: Props) {
-  console.log(coordinates);
+  const [formValues, setFormValues] = useState<FormValues>({
+    name: "",
+    age: 0,
+    gender: ""
+  });
+  // TODO Change FormValues to Hedgehog
+
+  /**
+   * Handle form field changes
+   */
+  const handleFormFieldChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = event.target;
+    setFormValues({
+      ...formValues,
+      [name]: value,
+    });
+  };
+
+  /**
+   * Handle form submit
+   */
+  const handleSubmit = async () => {
+    const response = await fetch('/api/v1/hedgehog/add', {
+      method: 'POST',
+      body: JSON.stringify(formValues),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+  }
 
   return (
     <Paper
@@ -37,21 +75,39 @@ export function HedgehogForm({ coordinates }: Props) {
         justifyContent: "center"
       }}>
         <FormLabel required>Nimi</FormLabel>
-        <TextField></TextField>
+        <TextField
+          name="name"
+          onChange={handleFormFieldChange}
+          ></TextField>
         <FormLabel required>Ikä</FormLabel>
-        <TextField type="number"></TextField>
-        <FormLabel id="gender-radio-buttons-group-label">Sukupuoli</FormLabel>
+        <TextField
+          name="age"
+          type="number"
+          onChange={handleFormFieldChange}
+          ></TextField>
+        <FormLabel>Sukupuoli</FormLabel>
         <RadioGroup
           row
           aria-labelledby="gender-radio-buttons-group-label"
           defaultValue="female"
-          name="gender-radio-buttons-group"
+          name="gender"
+          onChange={handleFormFieldChange}
         >
           <FormControlLabel value="female" control={<Radio />} label="Female" />
           <FormControlLabel value="male" control={<Radio />} label="Male" />
           <FormControlLabel value="other" control={<Radio />} label="Other" />
         </RadioGroup>
-        <Button variant="contained">Submit</Button>
+        <FormLabel>Klikkaa karttaa tallentaaksesi sijainnin</FormLabel>
+        <Typography>
+          {coordinates[0] + ' , ' + coordinates[1]}
+          </Typography>
+        <Button
+          variant="contained"
+          type="submit"
+          onClick={() => handleSubmit()}
+          >
+          Tallenna
+        </Button>
     </FormControl>
       <Typography sx={{ padding: "1em" }}>
         Siililtä kysyttävät tiedot: nimi, ikä, sukupuoli. Lisäksi siilin
