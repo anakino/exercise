@@ -2,7 +2,11 @@ import { Box, MenuItem, Paper, Typography } from "@mui/material";
 import { Hedgehog } from "@shared/hedgehog";
 import { useEffect, useState } from "react";
 
-export default function HedgeHogList() {
+interface Props {
+  onClick: (listItemId: number) => void;
+}
+
+export default function HedgeHogList( { onClick }: Props) {
   const [hedgehogs, setHedgehogs] = useState<Hedgehog[]>([]);
 
   // Fetch all hedgehog's during startup
@@ -48,6 +52,7 @@ export default function HedgeHogList() {
                 zIndex: 2
               }}
               key={`hedgehog-index-${index}`}
+              onClick={() => onClick(hedgehog.id)}
             >
               <Box
                 sx={{
