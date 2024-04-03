@@ -6,7 +6,7 @@ import { sql } from "slonik";
 export async function getAllHedgehogs() {
   try {
     const hedgehogs = await getPool().any(
-      sql.type(hedgehogSchema)`SELECT id FROM hedgehog`
+      sql.type(hedgehogSchema)`SELECT id, name, age, gender FROM hedgehog`
     );
 
     return hedgehogs;
@@ -15,6 +15,22 @@ export async function getAllHedgehogs() {
   }
 }
 
-// TODO: Yksittäisen siilin hakeminen tietokannasta ID:llä
+/**
+ * Get one hedgehog from database by id
+ *
+ * @param id Hedgehog id
+ * @returns Json hedgehog
+ */
+export async function getHedgehog(id: number) {
+  try {
+    const hedgehog = await getPool().any(
+      sql.type(hedgehogSchema)`SELECT id, name, age, gender FROM hedgehog WHERE id = ${id}`
+    );
+
+    return hedgehog;
+  } catch (error) {
+    logger.error(error);
+  }
+}
 
 // TODO: Yksittäisen siilin lisäämisen sovelluslogiikka

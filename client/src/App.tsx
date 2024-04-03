@@ -47,7 +47,7 @@ export function App() {
           overflow: "hidden",
         }}
       >
-        <HedgeHogList />
+        <HedgeHogList onClick={(id) => setSelectedHedgehogId(id)} />
         <Box>
           <HedgehogInfo hedgehogId={selectedHedgehogId} />
           <HedgehogForm coordinates={coordinates || []} />
