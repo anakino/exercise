@@ -69,6 +69,24 @@ export function HedgehogInfo({ hedgehogId }: Props) {
     );
   }
 
+  /**
+   * Get translated text for gender
+   *
+   * @param gender string
+   * @returns string Translated text
+   */
+  function translateGender(gender: string) {
+    if (gender == 'male')
+    {
+      return 'uros';
+    }
+    else if(gender == 'female')
+    {
+      return 'naaras';
+    }
+    else return 'tuntematon';
+  }
+
   return (
     <Paper
       elevation={3}
@@ -95,7 +113,7 @@ export function HedgehogInfo({ hedgehogId }: Props) {
         <Box>
           {getInfoComponent("Nimi", hedgehog.name)}
           {getInfoComponent("Ikä", String(hedgehog.age))}
-          {getInfoComponent("Sukupuoli", hedgehog.gender)}
+          {getInfoComponent("Sukupuoli", translateGender(hedgehog.gender))}
         </Box>
       ) : (
         <Box sx={{
